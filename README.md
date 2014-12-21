@@ -8,10 +8,11 @@ It creates meteor package, upload it to your server, unpack, install and launch 
 This script is designed for a server that runs apache; should not be difficult to adapt it for nginx, since there are differences only if you use the option (not implemented yet) to create virtual host file and restart web server on deploy (if your domain does not exists yet on your server)
 - node.js with forever should be installed on your server
 - this script uses ssh connection so you need appropriate credentials
+- your ssh user should be able to use sudo
 
 ##**Usage:**
 - fill configuration.json with necessary data
-- clone this repository into meteor app folder (rename the repository's folder starting with a "." to let meteor ignore it during building process
+- put all this files into a subfolder in meteor app folder (start this folder's name with a "." to let meteor ignore it during building process)
 - run ```node deploy.js from within this repository's folder```
 
 
@@ -38,4 +39,3 @@ This script is designed for a server that runs apache; should not be difficult t
 
 ###**Roadmap:**
 Right now this script only deploy your meteor app to the server; soon db data transfer to the server and viceversa and virtual host creation will be implemented
-
