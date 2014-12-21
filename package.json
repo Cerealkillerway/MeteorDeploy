@@ -1,0 +1,28 @@
+{
+  "name": "meteor-deploy",
+  "description": "Quick deploy to custom server for Meteor apps",
+  "version": "0.0.1",
+  "author": {
+    "name": "CK"
+  },
+  "maintainers": [
+    {
+      "name": "CK",
+      "email": "info@web-forge.info"
+    }
+  ],
+  "dependencies": {
+    "cli-color": "~0.3.2",
+    "exec-sync": "^0.1.6",
+    "progress-bar": "^0.1.1",
+    "read-json-sync": "^1.0.0",
+    "scp2": "^0.2.0",
+    "ssh2": "^0.3.6"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "keywords": [
+    "meteor"
+  ]
+}

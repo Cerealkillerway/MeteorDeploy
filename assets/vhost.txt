@@ -1,0 +1,25 @@
+<VirtualHost *:80 >
+    ServerAdmin postmaster@<<<domainName>>>
+    ServerName <<<domainName>>>
+    ServerAlias *.<<<domainName>>>
+    ServerSignature Off
+
+    ProxyRequests off
+
+    <Proxy *>
+        Order deny,allow
+        Allow from all
+    </Proxy>
+
+    <Location />
+        ProxyPass http://localhost:<<<port>>>/
+        ProxyPassReverse http://localhost:<<<port>>>/
+    </Location>
+
+    <IfModule mod_rewrite.c>
+        RewriteEngine on
+        RewriteCond %{HTTP:UPGRADE} ^WebSocket$ [NC]
+        RewriteCond %{HTTP:CONNECTION} ^Upgrade$ [NC]
+        RewriteRule .* ws://localhost:<<<port>>>%{REQUEST_URI} [P]
+    </IfModule>
+</VirtualHost>
