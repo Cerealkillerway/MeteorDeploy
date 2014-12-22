@@ -6,8 +6,12 @@
         "domainName": "domain.com"
     },
     "mongodb": {
+        "rootUser": "root",
+        "rootPass": "rootPass",
+        "rootAuthDb": "admin",
         "user": "dbUser",
         "password": "dbPass",
+        "serverAddress": "x.x.x.x",
         "port": 27017,
         "dbName": "domain"
     },
@@ -18,5 +22,6 @@
     "foreverProcessName": "app-name.js",
     "sshUser": "sshUser",
     "sshAddress": "x.x.x.x",
-    "sshPass": "sshPass"
+    "sshPass": "sshPass",
+    "localProcessMemoFile": "/home/cerealkiller/works/web-resources/meteor/running-apps.txt"
 }

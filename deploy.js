@@ -57,6 +57,67 @@ function createVhost() {
     });
 }
 
+//creates or updates memo files
+function memoFiles(ssh) {
+	var firstLine = false;
+	var data = "";
+
+	console.log(clc.blueBright('reading memo file informations...'));
+	//check if it's gonna writing the firs line of the file
+	if (fs.existsSync(configuration.localProcessMemoFile)) {
+    	var lines = fs.readFileSync(configuration.localProcessMemoFile);
+
+    	lines = lines.toString().split("\n");
+    	if (lines.length === 0) firstLine = true;
+
+    	//check if current app is already in memo file
+    	for(i = 0; i < lines.length; i++) {
+    		if (lines[i].indexOf(configuration.foreverProcessName) >= 0) {
+    			console.log(clc.yellowBright("this app is already in memo file"));
+    			return;
+    		}
+    	}
+	}
+	else firstLine = true;
+
+	//if this is the first line creates the header
+	if (firstLine) {
+		data = 'APPLICATION NAME:';
+		while (data.length < 50) {
+			data = data + " ";
+		}
+		data = data + "PORT:\n";
+		data = data + '-----------------------------------------------------------------------\n';
+	}
+
+	console.log(clc.greenBright('done\n'));
+
+
+	console.log(clc.blueBright('updating memo file...'));
+
+	var processName = configuration.foreverProcessName;
+
+	while (processName.length < 50) {
+		processName = processName + " ";
+	}
+
+	data = data + processName + " - port: " + configuration.port + '\n';
+
+	fs.appendFile(configuration.localProcessMemoFile, data, function(err) {
+        if(err) throw err;
+
+        console.log(clc.greenBright('local memo file updated'));
+    });
+}
+
+//creates new mongo db and user for the app
+function createMongoDb() {
+	var connection = new Mongo('144.76.103.88:27017');
+	var db = conn.getDB("admin");
+
+	db.adminCommand('listDatabases');
+}
+
 function untarArchive(ssh) {
 
 	console.log(clc.blueBright("extracting remote archive"));
@@ -67,6 +128,12 @@ function untarArchive(ssh) {
 		stream.on('exit', function(code, signal) {
 
 			console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+			if (code !== 0) {
+				operationError();
+				return false;
+			}
+
 			console.log(clc.greenBright('remote archive extracted correctly\n'));
 
 			remoteOperations(ssh);
@@ -88,6 +155,12 @@ function remoteOperations(ssh) {
 		.on('exit', function(code, signal) {
 
 			console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+			if (code !== 0) {
+				operationError();
+				return false;
+			}
+
 			console.log(clc.greenBright('application moved correctly to website folder\n'));
 			console.log(clc.blueBright('cleaning up home and unpacking app'));
 
@@ -101,6 +174,12 @@ function remoteOperations(ssh) {
 				.on('exit', function(code, signal) {
 
 					console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+					if (code !== 0) {
+						operationError();
+						return false;
+					}
+
 					console.log(clc.greenBright('application unpacked\n'));
 					console.log(clc.blueBright('remove app tar file...'));
 
@@ -114,6 +193,12 @@ function remoteOperations(ssh) {
 					    .on('exit', function(code, signal) {
 
 					    	console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+					    	if (code !== 0) {
+								operationError();
+								return false;
+							}
+
 							console.log(clc.greenBright('tar file removed\n'));
 							console.log(clc.blueBright('moving bundle content to website root folder...'));
 
@@ -125,6 +210,12 @@ function remoteOperations(ssh) {
 					    		})
 					    		.on('exit', function(code, signal) {
 					    			console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+					    			if (code !== 0) {
+										operationError();
+										return false;
+									}
+
 									console.log(clc.greenBright('meteor package extracted\n'));
 									console.log(clc.blueBright('removing bundle folder...'));
 
@@ -136,6 +227,12 @@ function remoteOperations(ssh) {
 										})
 										.on('exit', function(code, signal) {
 											console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+											if (code !== 0) {
+												operationError();
+												return false;
+											}
+
 											console.log(clc.greenBright('bundle folder removed correctly\n'));
 											console.log(clc.blueBright('renaming main file...'));
 
@@ -147,6 +244,12 @@ function remoteOperations(ssh) {
 												})
 												.on('exit', function(code, signal) {
 													console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+													if (code !== 0) {
+														operationError();
+														return false;
+													}
+
 													console.log(clc.greenBright('main file renamed correctly\n'));
 													console.log(clc.blueBright('installing npm modules...'));
 
@@ -194,6 +297,12 @@ function getForeverId(ssh) {
 					})
 					.on('exit', function(code, signal) {
 						console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+						if (code !== 0) {
+							operationError();
+							return false;
+						}
+
 						console.log(clc.greenBright("Previous forever process stopped correctly\n"));
 						startForever(ssh);
 					});
@@ -237,6 +346,13 @@ function startForever(ssh) {
 
 function cleanUp() {
 	execSync('rm archive.tar.gz');
+
+	memoFiles();
+}
+
+function operationError() {
+	console.log(clc.redBright("ERROR: something wrong while perorming task..."));
+	return;
 }
 
 
@@ -288,6 +404,12 @@ ssh.on('ready', function() {
 
 		stream.on('exit', function(code, signal) {
 			console.log(clc.yellowBright('exit code: ' + code + ' signal: ' + signal));
+
+			if (code !== 0) {
+				operationError();
+				return false;
+			}
+
 			console.log(clc.greenBright('remote temp folder fot the package created\n'));
 			console.log(clc.blueBright('sending remote script to server...\n'));
 
