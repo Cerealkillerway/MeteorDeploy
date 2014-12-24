@@ -23,5 +23,5 @@
     "sshUser": "sshUser",
     "sshAddress": "x.x.x.x",
     "sshPass": "sshPass",
-    "localProcessMemoFile": "/home/cerealkiller/works/web-resources/meteor/running-apps.txt"
+    "localProcessMemoFile": "/your/desired/folder/running-apps.txt"
 }

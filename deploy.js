@@ -112,10 +112,7 @@ function memoFiles(ssh) {
 
 //creates new mongo db and user for the app
 function createMongoDb() {
-	var connection = new Mongo('144.76.103.88:27017');
-	var db = conn.getDB("admin");
-
-	db.adminCommand('listDatabases');
+	// not yet implemented
 }
 
 function untarArchive(ssh) {
@@ -352,7 +349,7 @@ function cleanUp() {
 
 function operationError() {
 	console.log(clc.redBright("ERROR: something wrong while perorming task..."));
-	return;
+	process.exit(1);
 }
 
 

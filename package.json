@@ -1,9 +1,18 @@
 {
   "name": "meteor-deploy",
+  "version": "0.0.2",
   "description": "Quick deploy to custom server for Meteor apps",
-  "version": "0.0.1",
   "author": {
-    "name": "CK"
+    "name": "CK",
+    "email": "cerealkillerway@gmail.com"
+  },
+  "keywords": [
+    "meteor",
+    "deploy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Cerealkillerway/MeteorDeploy.git"
   },
   "maintainers": [
     {
@@ -19,6 +28,7 @@
     "scp2": "^0.2.0",
     "ssh2": "^0.3.6"
   },
+  "licence": "MIT",
   "engines": {
     "node": ">=0.10.0"
   },
