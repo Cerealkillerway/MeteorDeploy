@@ -1,38 +1,45 @@
 {
-  "name": "meteor-deploy",
-  "version": "0.0.2",
+  "name": "meteor-deploy-ssh",
+  "version": "0.0.3",
   "description": "Quick deploy to custom server for Meteor apps",
-  "author": {
-    "name": "CK",
-    "email": "cerealkillerway@gmail.com"
+  "author": "CK <cerealkillerway@gmail.com>",
+  "bin": {
+    "deploy": "./lib/deploy.js"
   },
+  "main": "./lib/deploy.js",
+  "preferGlobal": "true",
   "keywords": [
-    "meteor",
-    "deploy"
+    "meteor"
   ],
   "repository": {
     "type": "git",
     "url": "git://github.com/Cerealkillerway/MeteorDeploy.git"
   },
   "maintainers": [
-    {
-      "name": "CK",
-      "email": "cerealkillerway@gmail.com"
-    }
+    "CK <cerealkillerway@gmail.com>"
   ],
   "dependencies": {
     "cli-color": "~0.3.2",
     "exec-sync": "^0.1.6",
+    "minimist": "^1.1.0",
+    "mkdirp": "^0.5.0",
     "progress-bar": "^0.1.1",
     "read-json-sync": "^1.0.0",
     "scp2": "^0.2.0",
+    "simple-ssh": "^0.8.1",
     "ssh2": "^0.3.6"
   },
   "licence": "MIT",
   "engines": {
     "node": ">=0.10.0"
   },
-  "keywords": [
-    "meteor"
-  ]
+  "bugs": {
+    "url": "https://github.com/Cerealkillerway/MeteorDeploy/issues"
+  },
+  "homepage": "https://github.com/Cerealkillerway/MeteorDeploy",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT"
 }

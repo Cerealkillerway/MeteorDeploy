@@ -1,6 +1,10 @@
 MeteorDeploy
 ============
 
+```npm install -g meteor-deploy-ssh```
+
+**this script is a work in progress;** for now it cannot handle mongodb data or create virtual host files yet.
+
 Node script to deploy meteor application to custom server.
 It creates meteor package, upload it to your server, unpack, install and launch application with node.js forever.
 
@@ -11,9 +15,9 @@ This script is designed for a server that runs apache; should not be difficult t
 - your ssh user should be able to use sudo
 
 ##**Usage:**
-- fill configuration.json with necessary data
-- put all this files into a subfolder in meteor app folder (start this folder's name with a "." to let meteor ignore it during building process)
-- run ```node deploy.js from within this repository's folder```
+- install as global npm module and run ```deploy -i``` from within your meteor app's folder
+- this will create a .deploy folder inside your meteor app's folder; fill the **.deploy/configuration.json** file with the needed informations;
+- run ```deploy``` from within the meteor app's folder
 
 
 ##**configuration.json**
@@ -48,4 +52,10 @@ Right now this script only deploy your meteor app to the server; soon db data tr
 
 
 ###**ChangeLog:**
-- 22/12/2014 added memo file function
+- 26/12/2014 
+    - modified to be a global npm module
+    - improved memo file function to detect if port for the app has changed
+
+
+- 22/12/2014 
+    - added memo file function
