@@ -26,7 +26,6 @@
     "progress-bar": "^0.1.1",
     "read-json-sync": "^1.0.0",
     "scp2": "^0.2.0",
-    "simple-ssh": "^0.8.1",
     "ssh2": "^0.3.6"
   },
   "licence": "MIT",
