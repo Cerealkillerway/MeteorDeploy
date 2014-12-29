@@ -1,6 +1,6 @@
 {
   "name": "meteor-deploy-ssh",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Quick deploy to custom server for Meteor apps",
   "author": "CK <cerealkillerway@gmail.com>",
   "bin": {
@@ -21,8 +21,8 @@
   "dependencies": {
     "cli-color": "~0.3.2",
     "exec-sync": "^0.1.6",
-    "minimist": "^1.1.0",
     "mkdirp": "^0.5.0",
+    "mongodb": "^1.4.26",
     "progress-bar": "^0.1.1",
     "read-json-sync": "^1.0.0",
     "scp2": "^0.2.0",

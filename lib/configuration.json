@@ -1,27 +1,34 @@
 {
-    "vHost": {
-        "apache24": true,       
-        "baseFile": "assets/vhost.txt",
-        "destDir": "/etc/apache2/sites-available/",
-        "domainName": "domain.com"
+    "local": {
+        "mongodb": {
+            "port": 3001
+        }
     },
-    "mongodb": {
-        "rootUser": "root",
-        "rootPass": "rootPass",
-        "rootAuthDb": "admin",
-        "user": "dbUser",
-        "password": "dbPass",
-        "serverAddress": "x.x.x.x",
-        "port": 27017,
-        "dbName": "domain"
-    },
-    "distDir": "dist",
-    "webDirectory": "/var/www/user/domain.com/",
-    "appName": "app-name",
-    "port": 3000,
-    "foreverProcessName": "app-name.js",
-    "sshUser": "sshUser",
-    "sshAddress": "x.x.x.x",
-    "sshPass": "sshPass",
-    "localProcessMemoFile": "/your/desired/folder/running-apps.txt"
+    "production": {
+        "vHost": {
+            "apache24": true,       
+            "baseFile": "assets/vhost.txt",
+            "destDir": "/etc/apache2/sites-available/",
+            "domainName": "domain.com"
+        },
+        "mongodb": {
+            "rootUser": "root",
+            "rootPass": "rootPass",
+            "rootAuthDb": "admin",
+            "user": "dbUser",
+            "password": "dbPass",
+            "serverAddress": "x.x.x.x",
+            "port": 27017,
+            "dbName": "domain"
+        },
+        "distDir": "dist",
+        "webDirectory": "/var/www/user/domain.com/",
+        "appName": "app-name",
+        "port": 3000,
+        "foreverProcessName": "app-name.js",
+        "sshUser": "sshUser",
+        "sshAddress": "x.x.x.x",
+        "sshPass": "sshPass",
+        "localProcessMemoFile": "/your/desired/folder/running-apps.txt"
+    }
 }
