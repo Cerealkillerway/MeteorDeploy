@@ -1,6 +1,6 @@
 {
   "name": "meteor-deploy-ssh",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Quick deploy to custom server for Meteor apps",
   "author": "CK <cerealkillerway@gmail.com>",
   "bin": {
@@ -9,7 +9,8 @@
   "main": "./lib/deploy.js",
   "preferGlobal": "true",
   "keywords": [
-    "meteor"
+    "meteor",
+    "deploy"
   ],
   "repository": {
     "type": "git",

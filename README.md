@@ -5,7 +5,7 @@ MeteorDeploy
 
 **this script is a work in progress**
 
-TODO:
+##**TODO:**
 - virtualhost creation option
 - mongodb dump and restore option
 
@@ -48,7 +48,7 @@ create mongo db user without deploy
 
 in this file there are:
 - a **local** object containing configuration for local meteor app (only mongodb port for now; not used yet, will be used to restore locally db dumps)
-- N **"deployPosition"** objects, each of them with these fields
+- N **"deployPosition"** objects, each of them with the following fields:
 
 (after you run ```deploy -init```, look you can copy and paste "production" object in .deploy/configuration.json in order to set up ad many deploy environments as you need)
 
