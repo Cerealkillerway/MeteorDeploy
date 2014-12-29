@@ -21,13 +21,14 @@ This script is designed for a server that runs apache; should not be difficult t
 ##**Usage:**
 - install as global npm module and run ```deploy -init``` from within your meteor app's folder
 - this will create a .deploy folder inside your meteor app's folder; fill the **.deploy/configuration.json** file with the needed informations;
+- then run:
 
-```deploy to "deployPosition"``` from within the meteor app's folder
+```deploy to "deployPosition"``` (from within the meteor app's folder)
 
 ##**OTHER COMMAND LINE OPTIONS:**
 ```deploy -init ```           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
 
-```deploy -newdb to "deployPosition"```        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
+```deploy -newdb on "deployPosition"```        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
 
 ##**EXAMPLES**
 deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);
