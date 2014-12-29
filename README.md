@@ -19,15 +19,15 @@ This script is designed for a server that runs apache; should not be difficult t
 - your ssh user should be able to use sudo
 
 ##**Usage:**
-- install as global npm module and run ```deploy -i``` from within your meteor app's folder
+- install as global npm module and run ```deploy -init``` from within your meteor app's folder
 - this will create a .deploy folder inside your meteor app's folder; fill the **.deploy/configuration.json** file with the needed informations;
 
 ```deploy to "deployPosition"``` from within the meteor app's folder
 
-**OTHER COMMAND LINE OPTIONS:**
-*deploy -init  *           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
+##**OTHER COMMAND LINE OPTIONS:**
+```deploy -init ```           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
 
-*deploy -newdb to "deployPosition"*        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
+```deploy -newdb to "deployPosition"```        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
 
 ##**EXAMPLES**
 deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);
@@ -48,6 +48,9 @@ create mongo db user without deploy
 in this file there are:
 - a **local** object containing configuration for local meteor app (only mongodb port for now; not used yet, will be used to restore locally db dumps)
 - N **"deployPosition"** objects, each of them with these fields
+
+(after you run ```deploy -init```, look you can copy and paste "production" object in .deploy/configuration.json in order to set up ad many deploy environments as you need)
+
 
 [the vHost parameters are optionals: they are needed only if you will use vhost option]
 - **vHost** object contains informations about apache configuration (used to deploy app to a domain that does not exist yet on your server):
