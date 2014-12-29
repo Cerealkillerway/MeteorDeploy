@@ -4,6 +4,7 @@ MeteorDeploy
 ```npm install -g meteor-deploy-ssh```
 
 **this script is a work in progress**
+
 TODO:
 - virtualhost creation option
 - mongodb dump and restore option
@@ -27,14 +28,17 @@ This script is designed for a server that runs apache; should not be difficult t
 *deploy -init  *           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
 *deploy -newdb to <deployPosition>*        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
 
-**EXAMPLES**
+##**EXAMPLES**
 ```//deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);```
+
 ```deploy to production```
 
 ```//create mongo db user and deploy on "production" (if you don't have a mongodb database & user already configured for the app on your server)```
+
 ```deploy to production -newdb```
 
 ```//create mongo db user without deploy```
+
 ```deploy -newdb on production```
 
 
