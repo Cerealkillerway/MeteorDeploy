@@ -3,7 +3,10 @@ MeteorDeploy
 
 ```npm install -g meteor-deploy-ssh```
 
-**this script is a work in progress;** for now it cannot handle mongodb data or create virtual host files yet.
+**this script is a work in progress**
+TODO:
+- virtualhost creation option
+- mongodb dump and restore option
 
 Node script to deploy meteor application to custom server.
 It creates meteor package, upload it to your server, unpack, install and launch application with node.js forever.
@@ -17,20 +20,42 @@ This script is designed for a server that runs apache; should not be difficult t
 ##**Usage:**
 - install as global npm module and run ```deploy -i``` from within your meteor app's folder
 - this will create a .deploy folder inside your meteor app's folder; fill the **.deploy/configuration.json** file with the needed informations;
-- run ```deploy``` from within the meteor app's folder
+
+```deploy to <deployPosition>``` from within the meteor app's folder
+
+**OTHER COMMAND LINE OPTIONS:**
+*deploy -init  *           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
+*deploy -newdb to <deployPosition>*        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
+
+**EXAMPLES**
+```//deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);```
+```deploy to production```
+
+```//create mongo db user and deploy on "production" (if you don't have a mongodb database & user already configured for the app on your server)```
+```deploy to production -newdb```
+
+```//create mongo db user without deploy```
+```deploy -newdb on production```
 
 
 ##**configuration.json**
 
+in this file there are:
+- a **local** object containing configuration for local meteor app (only mongodb port for now; not used yet, will be used to restore locally db dumps)
+- N **<deployPosition>** objects, each of them with these fields
+
+[the vHost parameters are optionals: they are needed only if you will use vhost option]
 - **vHost** object contains informations about apache configuration (used to deploy app to a domain that does not exist yet on your server):
     - **apache24**: set to true if your server uses apache 2.4 (that needs .conf suffix in virtual host file); set to false if you are using apache 2.2 or older
     - **baseFile**: is the local file used to build the virtual host for your meteor app; it contains ```<<<placeholders>>>``` that will substituted with necessary data by the script; you can edit this file if you need to; it is not needed to edit this line of configuration.json if you don't move the file away from assets folder
     - **destDir**: is the folder on your server where the virtual host file should be saved (depends by server's configuration)
 
 - **mongodb** object contains parameters to connect to your remote mongo db for your app
+    [the first three parameters are optionals: are needed only if you need to create a new user for mongodb on your server]
     - **rootUser**: the username of an admin user in mongodb (should be able to create users)
     - **rootPass**: the password of mongo admin user
     - **rootAuthDb**: the name of the db where admin user belongs to
+
     - **user**: remote mongodb username
     - **password**: remote mongodb password
     - **serverAddress**: the ip of the server where mongo is running (for now it is supported only the same server where app is unpacked)
@@ -52,6 +77,10 @@ Right now this script only deploy your meteor app to the server; soon db data tr
 
 
 ###**ChangeLog:**
+- 29/12/2014
+    - now supporting multi deploy positions
+    - implemented remote mongo db user creation
+
 - 26/12/2014 
     - modified to be a global npm module
     - improved memo file function to detect if port for the app has changed
