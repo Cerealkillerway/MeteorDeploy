@@ -22,22 +22,23 @@ This script is designed for a server that runs apache; should not be difficult t
 - install as global npm module and run ```deploy -i``` from within your meteor app's folder
 - this will create a .deploy folder inside your meteor app's folder; fill the **.deploy/configuration.json** file with the needed informations;
 
-```deploy to <deployPosition>``` from within the meteor app's folder
+```deploy to "deployPosition"``` from within the meteor app's folder
 
 **OTHER COMMAND LINE OPTIONS:**
 *deploy -init  *           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
-*deploy -newdb to <deployPosition>*        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
+
+*deploy -newdb to "deployPosition"*        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
 
 ##**EXAMPLES**
-```//deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);```
+deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);
 
 ```deploy to production```
 
-```//create mongo db user and deploy on "production" (if you don't have a mongodb database & user already configured for the app on your server)```
+create mongo db user and deploy on "production" (if you don't have a mongodb database & user already configured for the app on your server)
 
 ```deploy to production -newdb```
 
-```//create mongo db user without deploy```
+create mongo db user without deploy
 
 ```deploy -newdb on production```
 
@@ -46,12 +47,12 @@ This script is designed for a server that runs apache; should not be difficult t
 
 in this file there are:
 - a **local** object containing configuration for local meteor app (only mongodb port for now; not used yet, will be used to restore locally db dumps)
-- N **<deployPosition>** objects, each of them with these fields
+- N **"deployPosition"** objects, each of them with these fields
 
 [the vHost parameters are optionals: they are needed only if you will use vhost option]
 - **vHost** object contains informations about apache configuration (used to deploy app to a domain that does not exist yet on your server):
     - **apache24**: set to true if your server uses apache 2.4 (that needs .conf suffix in virtual host file); set to false if you are using apache 2.2 or older
-    - **baseFile**: is the local file used to build the virtual host for your meteor app; it contains ```<<<placeholders>>>``` that will substituted with necessary data by the script; you can edit this file if you need to; it is not needed to edit this line of configuration.json if you don't move the file away from assets folder
+    - **baseFile**: is the local file used to build the virtual host for your meteor app; it contains ```<<<placeholders>>>``` that will be substituted with necessary data by the script; you can edit this file if you need to; it is not needed to edit this line of configuration.json if you don't move the file away from assets folder
     - **destDir**: is the folder on your server where the virtual host file should be saved (depends by server's configuration)
 
 - **mongodb** object contains parameters to connect to your remote mongo db for your app
