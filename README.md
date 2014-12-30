@@ -106,6 +106,11 @@ Right now this script only deploy your meteor app to the server; soon db data tr
 
 
 ###**ChangeLog:**
+- 30/12/2014
+    - implemented virtual host creation and apache restart
+    - better error management
+    - corrected bug in ```deploy -init``` option
+
 - 29/12/2014
     - now supporting multi deploy positions
     - implemented remote mongo db user creation
