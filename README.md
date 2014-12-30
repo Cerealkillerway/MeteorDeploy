@@ -4,7 +4,7 @@ MeteorDeploy
 ```npm install -g meteor-deploy-ssh```
 
 ##**IMPORTANT**
-This script uses ssh2 node module by mscdex; with current version (0.3.6) there is an issue that causes lost of connection sometimes during operations executed for deploy;
+This script uses ssh2 node module by mscdex; with current version (0.3.6) there is an issue that causes loss of connection sometimes during operations executed for deploy;
 thanks to mscdex the latest version available on master-branch on github works like a flow; for convenience I've included the new files for ssh2 module inside the lib/ssh2-master/lib folder of this module; I recommand to overwrite these files to the standard versions installed by npm;
 
 for example, if the path for your global npm modules is the default one (```/usr/local/lib/node_modules```), copy and paste the content of ```/usr/local/lib/node_modules/meteor-deploy-ssh/lib/ssh2-master/lib``` inside ```/usr/local/lib/node_modules/meteor-deploy-ssh/node_modules/ssh2/lib```
@@ -24,6 +24,9 @@ It creates meteor package, upload it to your server, unpack, install and launch 
 
 ###**Prerequisites:**
 This script has a virtual host creation option designed for a server that runs apache with reversed proxy; should not be difficult to adapt this option for nginx, (you just need to edit .deploy/assets/vhost.txt file, since the provided one is for apache).
+
+If your server is running apache < 2.4 the ws reverse proxy will not work (your app will fallback to XHR polling).
+
 - node.js with forever should be installed on your server
 - this script uses ssh connection so you need appropriate credentials
 - your ssh user should be able to use sudo
