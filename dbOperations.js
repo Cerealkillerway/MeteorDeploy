@@ -32,6 +32,7 @@ db.createUser({
 })
 
 
+mongodb://paesidisandalmazzo:yEuUpWC8QEkx@144.76.103.88:27017/paesidisandalmazzo
 
 export MONGO_URL='mongodb://paesidisandalmazzo:yEuUpWC8QEkx@localhost:27017/paesidisandalmazzo'
 export ROOT_URL='http://www.paesidisandalmazzotest.it'
@@ -71,3 +72,9 @@ var db = new Db(configuration.mongodb.dbName, mongoUrl, {w: 'majority', readPref
 db.addUser('prova', 'pass', function(err, result) {
     console.log(result);
 });
+
+
+
+
+//tmp ssh2 master library overwrite command
+sudo rsync -a /usr/local/lib/node_modules/meteor-deploy-ssh/lib/ssh2-master/lib/* /usr/local/lib/node_modules/meteor-deploy-ssh/node_modules/ssh2/lib/

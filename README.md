@@ -3,17 +3,27 @@ MeteorDeploy
 
 ```npm install -g meteor-deploy-ssh```
 
+##**IMPORTANT**
+This script uses ssh2 node module by mscdex; with current version (0.3.6) there is an issue that causes lost of connection sometimes during operations executed for deploy;
+thanks to mscdex the latest version available on master-branch on github works like a flow; for convenience I've included the new files for ssh2 module inside the lib/ssh2-master/lib folder of this module; I recommand to overwrite these files to the standard versions installed by npm;
+
+for example, if the path for your global npm modules is the default one (```/usr/local/lib/node_modules```), copy and paste the content of ```/usr/local/lib/node_modules/meteor-deploy-ssh/lib/ssh2-master/lib``` inside ```/usr/local/lib/node_modules/meteor-deploy-ssh/node_modules/ssh2/lib```
+
+(or use this command from shell:)
+
+```sudo rsync -a /usr/local/lib/node_modules/meteor-deploy-ssh/lib/ssh2-master/lib/* /usr/local/lib/node_modules/meteor-deploy-ssh/node_modules/ssh2/lib/```
+
 **this script is a work in progress**
 
 ##**TODO:**
-- virtualhost creation option
 - mongodb dump and restore option
+- autofind application name
 
 Node script to deploy meteor application to custom server.
 It creates meteor package, upload it to your server, unpack, install and launch application with node.js forever.
 
 ###**Prerequisites:**
-This script is designed for a server that runs apache; should not be difficult to adapt it for nginx, since there are differences only if you use the option (not implemented yet) to create virtual host file and restart web server on deploy (if your domain does not exists yet on your server)
+This script has a virtual host creation option designed for a server that runs apache with reversed proxy; should not be difficult to adapt this option for nginx, (you just need to edit .deploy/assets/vhost.txt file, since the provided one is for apache).
 - node.js with forever should be installed on your server
 - this script uses ssh connection so you need appropriate credentials
 - your ssh user should be able to use sudo
@@ -23,12 +33,15 @@ This script is designed for a server that runs apache; should not be difficult t
 - this will create a .deploy folder inside your meteor app's folder; fill the **.deploy/configuration.json** file with the needed informations;
 - then run:
 
-```deploy to "deployPosition"``` (from within the meteor app's folder)
+```deploy to **deployPosition**``` (from within the meteor app's folder)
 
 ##**OTHER COMMAND LINE OPTIONS:**
 ```deploy -init ```           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
 
-```deploy -newdb on "deployPosition"```        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
+```deploy -newdb on **deployPosition**```        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
+
+```deploy to **deployPosition** -vhost```        will create the virtualhost file for apache, upload it to the server together with the meteor package, enable the new site and restart apache before deploy. Useful if your server is not yet setted up for the new website that will serve the meteor app;
+**Important:** wrong parameters or connection problems can make apache restart failure; so be sure to be able to connect by ssh, eventually delete the new vhost file and restart apache manually;
 
 ##**EXAMPLES**
 deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);
@@ -38,6 +51,10 @@ deploy app on "production" (production should be a object with all parameters se
 create mongo db user and deploy on "production" (if you don't have a mongodb database & user already configured for the app on your server)
 
 ```deploy to production -newdb```
+
+create mongo db user, virtual host file and deploy enabling new website on apache
+
+```deploy to production -vhost -newdb```
 
 create mongo db user without deploy
 
@@ -73,7 +90,7 @@ in this file there are:
 
 - **distDir**: local folder used to save the meteor package; you don't need to change this; the meteor package is not deleted after deploy, so if you need it you can find it in this folder
 - **webDirectory**: remote folder where your app should be unpacked on your server
-- **appName**: your application name
+- **appName**: your application name (**important:** this is the name choosen when the application has been created with meteor; you cannot use another name here)
 - **port**: the port that your application will use on your sever
 - **foreverProcessName**: the process name that will be used by forever to launch the application
 - **sshUser**: username for ssh connection to your server
