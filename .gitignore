@@ -1,4 +1,4 @@
 node_modules
 configuration.bak.json
-dbOperations
+dbOperations.js
 lib/deploy2.dev.js
