@@ -3,17 +3,12 @@ MeteorDeploy
 
 ```npm install -g meteor-deploy-ssh```
 
-##**IMPORTANT**
-This script uses ssh2 node module by mscdex; with current version (0.3.6) there is an issue that causes loss of connection sometimes during operations executed for deploy;
-thanks to mscdex the latest version available on master-branch on github works like a flow; for convenience I've included the new files for ssh2 module inside the lib/ssh2-master/lib folder of this module; I recommand to overwrite these files to the standard versions installed by npm;
+##**NOTICE:**
+This script needs the latest version from master-branch of ssh2 npm module by mscdex (thanks to him for his work);
+the current ssh2 module (0.3.6) does not include the latest changes; for convenience I've included the needed files for ssh2 module in subfolder /lib/ssh2-master;
 
-for example, if the path for your global npm modules is the default one (```/usr/local/lib/node_modules```), copy and paste the content of ```/usr/local/lib/node_modules/meteor-deploy-ssh/lib/ssh2-master/lib``` inside ```/usr/local/lib/node_modules/meteor-deploy-ssh/node_modules/ssh2/lib```
-
-(or use this command from shell:)
-
-```sudo rsync -a /usr/local/lib/node_modules/meteor-deploy-ssh/lib/ssh2-master/lib/* /usr/local/lib/node_modules/meteor-deploy-ssh/node_modules/ssh2/lib/```
-
-**this script is a work in progress**
+the first time that you will use deploy, the script will overwrite ssh2 module fils in meteor-deploy-ssh/node_modules folder with the latest version automatically;
+since the operation (copy files and delete lib/ssh2-master subfolder after that) needs root privileges, the first time you will use this script you will be prompted for sudo password two times for this two operations;
 
 ##**TODO:**
 - mongodb dump and restore option
@@ -106,6 +101,10 @@ Right now this script only deploy your meteor app to the server; soon db data tr
 
 
 ###**ChangeLog:**
+- 31/12/2014
+    - automatic ssh2 files update from mscdex/ssh2 master-branch
+    - better error management
+
 - 30/12/2014
     - implemented virtual host creation and apache restart
     - better error management
@@ -118,7 +117,6 @@ Right now this script only deploy your meteor app to the server; soon db data tr
 - 26/12/2014 
     - modified to be a global npm module
     - improved memo file function to detect if port for the app has changed
-
 
 - 22/12/2014 
     - added memo file function

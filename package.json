@@ -1,6 +1,6 @@
 {
   "name": "meteor-deploy-ssh",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Quick deploy to custom server for Meteor apps",
   "author": "CK <cerealkillerway@gmail.com>",
   "bin": {
