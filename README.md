@@ -5,13 +5,13 @@ MeteorDeploy
 
 ##**NOTICE:**
 This script needs the latest version from master-branch of ssh2 npm module by mscdex (thanks to him for his work);
-the current ssh2 module (0.3.6) does not include the latest changes; for convenience I've included the needed files for ssh2 module in subfolder /lib/ssh2-master;
+the current ssh2 module on npm (0.3.6) does not include the latest changes; for convenience I've included the needed files for ssh2 module in subfolder /lib/ssh2-master;
 
-the first time that you will use deploy, the script will overwrite ssh2 module fils in meteor-deploy-ssh/node_modules folder with the latest version automatically;
-since the operation (copy files and delete lib/ssh2-master subfolder after that) needs root privileges, the first time you will use this script you will be prompted for sudo password two times for this two operations;
+the first time that you will use deploy, the script will overwrite ssh2 module files in meteor-deploy-ssh/node_modules folder with the latest version automatically;
+since these operations (copy files and delete lib/ssh2-master subfolder after that) needs root privileges, the first time you will use this script you will be prompted for sudo password two times for this two operations;
 
 ##**TODO:**
-- mongodb dump and restore option
+- mongodb restore option
 - autofind application name
 
 Node script to deploy meteor application to custom server.
@@ -41,6 +41,8 @@ If your server is running apache < 2.4 the ws reverse proxy will not work (your 
 ```deploy to **deployPosition** -vhost```        will create the virtualhost file for apache, upload it to the server together with the meteor package, enable the new site and restart apache before deploy. Useful if your server is not yet setted up for the new website that will serve the meteor app;
 **Important:** wrong parameters or connection problems can make apache restart failure; so be sure to be able to connect by ssh, eventually delete the new vhost file and restart apache manually;
 
+```deploy -dump **deployPosition**```       will execute mongodump from specified position
+
 ##**EXAMPLES**
 deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);
 
@@ -57,6 +59,11 @@ create mongo db user, virtual host file and deploy enabling new website on apach
 create mongo db user without deploy
 
 ```deploy -newdb on production```
+
+create mongo dump for local database (mongo restore option coming soon...)
+
+```deploy -dump local```
+
 
 
 ##**configuration.json**
@@ -104,6 +111,7 @@ Right now this script only deploy your meteor app to the server; soon db data tr
 - 31/12/2014
     - automatic ssh2 files update from mscdex/ssh2 master-branch
     - better error management
+    - added mongo dump option
 
 - 30/12/2014
     - implemented virtual host creation and apache restart
