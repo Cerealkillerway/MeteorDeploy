@@ -44,7 +44,10 @@ If your server is running apache < 2.4 the ws reverse proxy will not work (your 
 ```deploy -dump **deployPosition**```       will execute mongodump from specified position
 
 ##**EXAMPLES**
-deploy app on "production" (production should be a object with all parameters setted up in .deploy/configuration.json);
+
+*Assuming production being an object with all parameters setted up in .deploy/configuration.json*
+
+deploy app on "production"
 
 ```deploy to production```
 
@@ -60,19 +63,23 @@ create mongo db user without deploy
 
 ```deploy -newdb on production```
 
-create mongo dump for local database (mongo restore option coming soon...)
+create mongo dump for local database (meteor should be running for this) (mongo restore option coming soon...)
 
 ```deploy -dump local```
+
+create mongo dump for remote database
+
+```deploy -dump production```
 
 
 
 ##**configuration.json**
 
 in this file there are:
-- a **local** object containing configuration for local meteor app (only mongodb port for now; not used yet, will be used to restore locally db dumps)
+- a **local** object containing configuration for local meteor app
 - N **"deployPosition"** objects, each of them with the following fields:
 
-(after you run ```deploy -init```, look you can copy and paste "production" object in .deploy/configuration.json in order to set up ad many deploy environments as you need)
+(after you run ```deploy -init```, look you can copy and paste "production" object in .deploy/configuration.json in order to set up as many deploy environments as you need)
 
 
 [the vHost parameters are optionals: they are needed only if you will use vhost option]
@@ -102,9 +109,6 @@ in this file there are:
 - **sshAddress**: your server ip for ssh connection
 - **sshPass**: password for your ssh user
 - **localProcessMemoFile**: this script creates an index file of all deployed processes and respectives used ports; this is the path where this file should be saved locally
-
-###**Roadmap:**
-Right now this script only deploy your meteor app to the server; soon db data transfer to the server and viceversa and virtual host creation will be implemented
 
 
 ###**ChangeLog:**
