@@ -133,8 +133,8 @@ in this file there are:
 - support for application running mongo db on another server
 
 #**Find it useful?**
-please consider making a small donation
-https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=igor%2eferrero82%40gmail%2ecom&lc=US&item_name=CK%20web%20design&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+please consider making a small donation:
+[donate](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=igor%2eferrero82%40gmail%2ecom&lc=US&item_name=CK%20web%20design&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 
 ###**ChangeLog:**
