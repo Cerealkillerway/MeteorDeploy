@@ -3,16 +3,18 @@ MeteorDeploy
 
 ```npm install -g meteor-deploy-ssh```
 
+##**WHAT IT DOES:**
+- create meteor package and send it to a server via ssh, extract it in specified website folder, install dependencies from npm, and run application with forever
+- optionally creates virtual host file, upload it to the server together with meteor package, move it in apache's folder, enable new website and restart apache
+- optionally creates a mongo dump from local or remote mongo db
+- optionally restores a mongo dump locally or remotely
+
 ##**NOTICE:**
 This script needs the latest version from master-branch of ssh2 npm module by mscdex (thanks to him for his work);
 the current ssh2 module on npm (0.3.6) does not include the latest changes; for convenience I've included the needed files for ssh2 module in subfolder /lib/ssh2-master;
 
 the first time that you will use deploy, the script will overwrite ssh2 module files in meteor-deploy-ssh/node_modules folder with the latest version automatically;
 since these operations (copy files and delete lib/ssh2-master subfolder after that) needs root privileges, the first time you will use this script you will be prompted for sudo password two times for this two operations;
-
-##**TODO:**
-- mongodb restore option
-- autofind application name
 
 Node script to deploy meteor application to custom server.
 It creates meteor package, upload it to your server, unpack, install and launch application with node.js forever.
@@ -39,9 +41,13 @@ If your server is running apache < 2.4 the ws reverse proxy will not work (your 
 ```deploy -newdb on **deployPosition**```        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
 
 ```deploy to **deployPosition** -vhost```        will create the virtualhost file for apache, upload it to the server together with the meteor package, enable the new site and restart apache before deploy. Useful if your server is not yet setted up for the new website that will serve the meteor app;
+
+
 **Important:** wrong parameters or connection problems can make apache restart failure; so be sure to be able to connect by ssh, eventually delete the new vhost file and restart apache manually;
 
-```deploy -dump **deployPosition**```       will execute mongodump from specified position
+```deploy -dump **deployPosition**```       will execute mongodump from specified position (use "local" to backup the db of locally running meteor app)
+
+```deploy -r **source** **destination**     will restore the specified mongodump (use "local" to restore a dump creted from local meteor app) to the specified destination mongo server
 
 ##**EXAMPLES**
 
@@ -71,6 +77,14 @@ create mongo dump for remote database
 
 ```deploy -dump production```
 
+restore a local dump to production server
+
+```deploy -r local production```
+
+all together (create local dump, create new remote mongo user, restore from local to remote, create virtual host and deploy)
+
+```deploy to production -newdb -vhost -dump local -r local```
+
 
 
 ##**configuration.json**
@@ -84,7 +98,7 @@ in this file there are:
 
 [the vHost parameters are optionals: they are needed only if you will use vhost option]
 - **vHost** object contains informations about apache configuration (used to deploy app to a domain that does not exist yet on your server):
-    - **apache24**: set to true if your server uses apache 2.4 (that needs .conf suffix in virtual host file); set to false if you are using apache 2.2 or older
+    - **apache24**: set to true if your server uses apache 2.4 (that needs .conf suffix in virtual host file's name); set to false if you are using apache 2.2 or older
     - **baseFile**: is the local file used to build the virtual host for your meteor app; it contains ```<<<placeholders>>>``` that will be substituted with necessary data by the script; you can edit this file if you need to; it is not needed to edit this line of configuration.json if you don't move the file away from assets folder
     - **destDir**: is the folder on your server where the virtual host file should be saved (depends by server's configuration)
 
@@ -96,7 +110,7 @@ in this file there are:
 
     - **user**: remote mongodb username
     - **password**: remote mongodb password
-    - **serverAddress**: the ip of the server where mongo is running (for now it is supported only the same server where app is unpacked)
+    - **serverAddress**: the ip of the server where mongo is running
     - **port**: port used by mongodb on your server (default 27017)
     - **dbName**: the name of the db that should be used by the app
 
@@ -110,8 +124,29 @@ in this file there are:
 - **sshPass**: password for your ssh user
 - **localProcessMemoFile**: this script creates an index file of all deployed processes and respectives used ports; this is the path where this file should be saved locally
 
+##**TIPS:**
+- if you often deploy new apps to the same server, you should consider to edit the source configuration file, located in module's folder (default is /usr/Local/lib/node_modules/meteor-deploy-ssh/lib/configuration.json); since this is the file copied by "-init" option into ".deploy" folder
+- the module use the provided virtual host base file to create virtual host files for your apps; this file is located in module's folder (default is /usr/local/lib/node_modules/meteor-deploy-ssh/assets/vhost.txt); if you have improvements or need an host file with different options, you can edit this; use placeholders <<<domainName>>> and <<<port>>> that will be substituted by the script with parameters coming from configuration.json file.
+
+##**TODO:**
+- autofind application name
+- support for application running mongo db on another server
+
+#**Find it useful?**
+please consider making a small donation
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHPwYJKoZIhvcNAQcEoIIHMDCCBywCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYBkPyDikQoVg9PaJjBZtwm7p+o8/USco1lpcScS/srtMX/VCl8pxzg/Fl5CH0qzlEsx/5dWTNoGfNJFwSrKrxtv9NXLlczClN+VPxgYBcFeijjhAE32v6cde19hd0rOMxH3OjLDTsj5VPLiSbPg1Si6fWMoYpfBM+qF7pNwpbf47TELMAkGBSsOAwIaBQAwgbwGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQIa+aC82Lv6TCAgZjHZ+tDWviejanVHmbpnOiMpH37B4/uuJ2+/NRHBKCT3ef1+wncdz6bar3nBt+WNeWqd7js0zMNr81EQDeimWKmVpSNVzs/6aVsY87T6mYr+tbAOsm2mxAwVw3DFKHQfwiOWl7Eq7t/x9Sh1uN0e8QFuRp8xx9KsNyp0mfh9MWFhCdjP5YEaDX2s1+AyyTf//ccG6OtywzNDaCCA4cwggODMIIC7KADAgECAgEAMA0GCSqGSIb3DQEBBQUAMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbTAeFw0wNDAyMTMxMDEzMTVaFw0zNTAyMTMxMDEzMTVaMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAwUdO3fxEzEtcnI7ZKZL412XvZPugoni7i7D7prCe0AtaHTc97CYgm7NsAtJyxNLixmhLV8pyIEaiHXWAh8fPKW+R017+EmXrr9EaquPmsVvTywAAE1PMNOKqo2kl4Gxiz9zZqIajOm1fZGWcGS0f5JQ2kBqNbvbg2/Za+GJ/qwUCAwEAAaOB7jCB6zAdBgNVHQ4EFgQUlp98u8ZvF71ZP1LXChvsENZklGswgbsGA1UdIwSBszCBsIAUlp98u8ZvF71ZP1LXChvsENZklGuhgZSkgZEwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tggEAMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADgYEAgV86VpqAWuXvX6Oro4qJ1tYVIT5DgWpE692Ag422H7yRIr/9j/iKG4Thia/Oflx4TdL+IFJBAyPK9v6zZNZtBgPBynXb048hsP16l2vi0k5Q2JKiPDsEfBhGI+HnxLXEaUWAcVfCsQFvd2A1sxRr67ip5y2wwBelUecP3AjJ+YcxggGaMIIBlgIBATCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwCQYFKw4DAhoFAKBdMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE1MDEwMjA2MTAwOFowIwYJKoZIhvcNAQkEMRYEFH/OXfLszNgHqTclN0q2uV6zYWM7MA0GCSqGSIb3DQEBAQUABIGAX9OmOaMspA2ivzpAMnQc7iFm0e8r/Ha7YqlsOks5L2eWTm7LXWITX82mIoNASI3n+aGx2s6u+Yn/Qut5zghN5AjwV8Dxg22oFNT3QXQR4Ys3PVtO9OpvSPPBpUUIgO8a62bGgqzhtV3zD0hjE3PsavySI3v0iadIJnGFlJvbuhA=-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+</form>
+
 
 ###**ChangeLog:**
+- 02/01/2015 Ver. 1.0.0
+    - added mongorestore function
+
 - 31/12/2014
     - automatic ssh2 files update from mscdex/ssh2 master-branch
     - better error management
@@ -132,3 +167,4 @@ in this file there are:
 
 - 22/12/2014 
     - added memo file function
+
