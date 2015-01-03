@@ -3,21 +3,14 @@ MeteorDeploy
 
 ```npm install -g meteor-deploy-ssh```
 
+Node script to deploy meteor application to custom server.
+It creates meteor package, upload it to your server, unpack, install and launch application with node.js forever.
+
 ##**WHAT IT DOES:**
 - create meteor package and send it to a server via ssh, extract it in specified website folder, install dependencies from npm, and run application with forever
 - optionally creates virtual host file, upload it to the server together with meteor package, move it in apache's folder, enable new website and restart apache
 - optionally creates a mongo dump from local or remote mongo db
 - optionally restores a mongo dump locally or remotely
-
-##**NOTICE:**
-This script needs the latest version from master-branch of ssh2 npm module by mscdex (thanks to him for his work);
-the current ssh2 module on npm (0.3.6) does not include the latest changes; for convenience I've included the needed files for ssh2 module in subfolder /lib/ssh2-master;
-
-the first time that you will use deploy, the script will overwrite ssh2 module files in meteor-deploy-ssh/node_modules folder with the latest version automatically;
-since these operations (copy files and delete lib/ssh2-master subfolder after that) needs root privileges, the first time you will use this script you will be prompted for sudo password two times for this two operations;
-
-Node script to deploy meteor application to custom server.
-It creates meteor package, upload it to your server, unpack, install and launch application with node.js forever.
 
 ###**Prerequisites:**
 This script has a virtual host creation option designed for a server that runs apache with reversed proxy; should not be difficult to adapt this option for nginx, (you just need to edit .deploy/assets/vhost.txt file, since the provided one is for apache).
@@ -47,7 +40,7 @@ If your server is running apache < 2.4 the ws reverse proxy will not work (your 
 
 ```deploy -dump **deployPosition**```       will execute mongodump from specified position (use "local" to backup the db of locally running meteor app)
 
-```deploy -r **source** **destination**     will restore the specified mongodump (use "local" to restore a dump creted from local meteor app) to the specified destination mongo server
+```deploy -r **source** **destination**```     will restore the specified mongodump (use "local" to restore a dump creted from local meteor app) to the specified destination mongo server
 
 ##**EXAMPLES**
 
@@ -85,8 +78,6 @@ all together (create local dump, create new remote mongo user, restore from loca
 
 ```deploy to production -newdb -vhost -dump local -r local```
 
-
-
 ##**configuration.json**
 
 in this file there are:
@@ -116,7 +107,6 @@ in this file there are:
 
 - **distDir**: local folder used to save the meteor package; you don't need to change this; the meteor package is not deleted after deploy, so if you need it you can find it in this folder
 - **webDirectory**: remote folder where your app should be unpacked on your server
-- **appName**: your application name (**important:** this is the name choosen when the application has been created with meteor; you cannot use another name here)
 - **port**: the port that your application will use on your sever
 - **foreverProcessName**: the process name that will be used by forever to launch the application
 - **sshUser**: username for ssh connection to your server
@@ -128,16 +118,28 @@ in this file there are:
 - if you often deploy new apps to the same server, you should consider to edit the source configuration file, located in module's folder (default is /usr/Local/lib/node_modules/meteor-deploy-ssh/lib/configuration.json); since this is the file copied by "-init" option into ".deploy" folder
 - the module use the provided virtual host base file to create virtual host files for your apps; this file is located in module's folder (default is /usr/local/lib/node_modules/meteor-deploy-ssh/assets/vhost.txt); if you have improvements or need an host file with different options, you can edit this; use placeholders <<<domainName>>> and <<<port>>> that will be substituted by the script with parameters coming from configuration.json file.
 
+##**NOTICE:**
+This script needs the latest version from master-branch of ssh2 npm module by mscdex (thanks to him for his work);
+the current ssh2 module on npm (0.3.6) does not include the latest changes; for convenience I've included the needed files for ssh2 module in subfolder /lib/ssh2-master;
+
+the first time that you will use deploy, the script will overwrite ssh2 module files in meteor-deploy-ssh/node_modules folder with the latest version automatically;
+since these operations (copy files and delete lib/ssh2-master subfolder after that) needs root privileges, the first time you will use this script you will be prompted for sudo password;
+
 ##**TODO:**
 - autofind application name
 - support for application running mongo db on another server
 
-#**Find it useful?**
+##**Found it useful?**
 please consider making a small donation:
 [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=igor%2eferrero82%40gmail%2ecom&lc=US&item_name=CK%20web%20design&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 
 ###**ChangeLog:**
+- 03/01/2015 Ver. 1.0.1
+    - added port in memo file
+    - minor improvements
+    - autofind of meteor app's name
+
 - 02/01/2015 Ver. 1.0.0
     - added mongorestore function
 
@@ -161,4 +163,3 @@ please consider making a small donation:
 
 - 22/12/2014 
     - added memo file function
-

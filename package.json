@@ -27,7 +27,8 @@
     "progress-bar": "^0.1.1",
     "read-json-sync": "^1.0.0",
     "scp2": "^0.2.0",
-    "ssh2": "^0.3.6"
+    "ssh2": "^0.3.6",
+    "sudo": "^1.0.3"
   },
   "licence": "MIT",
   "engines": {
