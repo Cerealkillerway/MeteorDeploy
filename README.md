@@ -125,17 +125,13 @@ the current ssh2 module on npm (0.3.6) does not include the latest changes; for 
 the first time that you will use deploy, the script will overwrite ssh2 module files in meteor-deploy-ssh/node_modules folder with the latest version automatically;
 since these operations (copy files and delete lib/ssh2-master subfolder after that) needs root privileges, the first time you will use this script you will be prompted for sudo password;
 
-##**TODO:**
-- autofind application name
-- support for application running mongo db on another server
-
 ##**Found it useful?**
 please consider making a small donation:
 [donate](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=igor%2eferrero82%40gmail%2ecom&lc=US&item_name=CK%20web%20design&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 
 ###**ChangeLog:**
-- 03/01/2015 Ver. 1.0.1
+- 03/01/2015 Ver. 1.0.2
     - added port in memo file
     - minor improvements
     - autofind of meteor app's name
