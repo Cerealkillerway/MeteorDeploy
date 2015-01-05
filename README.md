@@ -28,19 +28,19 @@ If your server is running apache < 2.4 the ws reverse proxy will not work (your 
 
 ```deploy to **deployPosition**``` (from within the meteor app's folder)
 
-##**OTHER COMMAND LINE OPTIONS:**
-```deploy -init ```           will initialize your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
+##**COMMAND LINE OPTIONS:**
+**-init** initializes your current folder with .deploy folder; after this you need to update .deploy/configuration.json with correct parameters
 
-```deploy -newdb on **deployPosition**```        will create a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
+**-newdb on \_deployPosition\_** creates a new mongodb user on your server for the app; the option "on" is needed only if -newdb is used without "to" option (only mongodb user creation without deploy)
 
-```deploy to **deployPosition** -vhost```        will create the virtualhost file for apache, upload it to the server together with the meteor package, enable the new site and restart apache before deploy. Useful if your server is not yet setted up for the new website that will serve the meteor app;
+**-vhost** manages virtual host file creation, and apache server restart (use this option if the website that will serve the app is not yet setted up on your server).<br/>
+*please pay attention*: due to connection problems or wrong parameters, apache restart operation can fail; in this case you need to be able to correct the problem and restart it manually.
 
+**-dump \_deployPosition\_** executes mongodump from specified position (use "local" to backup the db of locally running meteor app)
 
-**Important:** wrong parameters or connection problems can make apache restart failure; so be sure to be able to connect by ssh, eventually delete the new vhost file and restart apache manually;
+**-r \_source\_ \_destination\_** restores the specified mongodump (use "local" to restore a dump creted from local meteor app) to the specified destination mongo server
 
-```deploy -dump **deployPosition**```       will execute mongodump from specified position (use "local" to backup the db of locally running meteor app)
-
-```deploy -r **source** **destination**```     will restore the specified mongodump (use "local" to restore a dump creted from local meteor app) to the specified destination mongo server
+**-nows** disables web-sockets in your app using export DISABLE_WEBSOCKETS=true before launching the app (use it if your server is running apach 2.2 with no support for ws reverse proxy; this will avoid the waste of time for ws handshake when not supported)
 
 ##**EXAMPLES**
 
@@ -116,7 +116,7 @@ in this file there are:
 
 ##**TIPS:**
 - if you often deploy new apps to the same server, you should consider to edit the source configuration file, located in module's folder (default is /usr/Local/lib/node_modules/meteor-deploy-ssh/lib/configuration.json); since this is the file copied by "-init" option into ".deploy" folder
-- the module use the provided virtual host base file to create virtual host files for your apps; this file is located in module's folder (default is /usr/local/lib/node_modules/meteor-deploy-ssh/assets/vhost.txt); if you have improvements or need an host file with different options, you can edit this; use placeholders <<<domainName>>> and <<<port>>> that will be substituted by the script with parameters coming from configuration.json file.
+- the module use the provided virtual host base file to create virtual host files for your apps; this file is located in module's folder (default is /usr/local/lib/node_modules/meteor-deploy-ssh/assets/vhost.txt); if you have improvements or need an host file with different options, you can edit this; use placeholders ```<<<domainName>>>``` and ```<<<port>>>``` that will be substituted by the script with parameters coming from configuration.json file.
 
 ##**NOTICE:**
 This script needs the latest version from master-branch of ssh2 npm module by mscdex (thanks to him for his work);
@@ -131,6 +131,9 @@ please consider making a small donation:
 
 
 ###**ChangeLog:**
+- 05/01/2015 Ver. 1.0.3
+    - added "-nows" option
+
 - 03/01/2015 Ver. 1.0.2
     - added port in memo file
     - minor improvements
