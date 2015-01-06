@@ -23,6 +23,7 @@
         },
         "distDir": "dist",
         "webDirectory": "/var/www/user/domain.com/",
+        "appName": "my-app",
         "port": 3000,
         "foreverProcessName": "app-name.js",
         "sshUser": "sshUser",
