@@ -132,7 +132,7 @@ please consider making a small donation:
 
 
 ###**ChangeLog:**
-- 21/01/2015 Ver 1.0.8
+- 21/01/2015 Ver 1.0.9
     - added autofind appName function (no more need to specity it in configuration.json)
     - fixed bug for remote mongorestore
 
