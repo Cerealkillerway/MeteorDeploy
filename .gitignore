@@ -2,3 +2,5 @@ node_modules
 configuration.bak.json
 dbOperations.js
 lib/deploy2.dev.js
+README.html
+npm-debug.log
