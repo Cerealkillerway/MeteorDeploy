@@ -38,7 +38,8 @@ If your server is running apache < 2.4 the ws reverse proxy will not work (your 
 
 **-dump \_deployPosition\_** executes mongodump from specified position (use "local" to backup the db of locally running meteor app)
 
-**-r \_source\_ \_destination\_** restores the specified mongodump (use "local" to restore a dump creted from local meteor app) to the specified destination mongo server
+**-r \_source\_ \_destination\_** restores the specified mongodump (use "local" to restore a dump creted from local meteor app) to the specified destination mongo server.
+If the **-r** option is used together with **to** option, the argument of **to** will be used as **_destination_**.
 
 **-nows** disables web-sockets in your app using export DISABLE_WEBSOCKETS=true before launching it (to use if your server is running apach 2.2 with no support for ws reverse proxy; this will avoid the waste of time for ws handshake when not supported)
 
@@ -131,6 +132,10 @@ please consider making a small donation:
 
 
 ###**ChangeLog:**
+- 21/01/2015 Ver 1.0.8
+    - added autofind appName function (no more need to specity it in configuration.json)
+    - fixed bug for remote mongorestore
+
 - 05/01/2015 Ver. 1.0.3
     - added "-nows" option
 
